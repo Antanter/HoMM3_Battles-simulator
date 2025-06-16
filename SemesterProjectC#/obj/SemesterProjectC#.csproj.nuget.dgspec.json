@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/antan/ProgrammingOverall/SemesterProjects/SemesterProjectC#/SemesterProjectC#.csproj": {}
+    "/home/antan/ProgrammingOverall/SemesterProjects/HoMM3_Battles-simulator/SemesterProjectC#/SemesterProjectC#.csproj": {}
   },
   "projects": {
-    "/home/antan/ProgrammingOverall/SemesterProjects/SemesterProjectC#/SemesterProjectC#.csproj": {
+    "/home/antan/ProgrammingOverall/SemesterProjects/HoMM3_Battles-simulator/SemesterProjectC#/SemesterProjectC#.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/antan/ProgrammingOverall/SemesterProjects/SemesterProjectC#/SemesterProjectC#.csproj",
+        "projectUniqueName": "/home/antan/ProgrammingOverall/SemesterProjects/HoMM3_Battles-simulator/SemesterProjectC#/SemesterProjectC#.csproj",
         "projectName": "SemesterProjectC#",
-        "projectPath": "/home/antan/ProgrammingOverall/SemesterProjects/SemesterProjectC#/SemesterProjectC#.csproj",
+        "projectPath": "/home/antan/ProgrammingOverall/SemesterProjects/HoMM3_Battles-simulator/SemesterProjectC#/SemesterProjectC#.csproj",
         "packagesPath": "/home/antan/.nuget/packages/",
-        "outputPath": "/home/antan/ProgrammingOverall/SemesterProjects/SemesterProjectC#/obj/",
+        "outputPath": "/home/antan/ProgrammingOverall/SemesterProjects/HoMM3_Battles-simulator/SemesterProjectC#/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/antan/.nuget/NuGet/NuGet.Config"
@@ -41,6 +41,10 @@
             "GtkSharp": {
               "target": "Package",
               "version": "[3.24.24.95, )"
+            },
+            "LibVLCSharp": {
+              "target": "Package",
+              "version": "[3.9.3, )"
             }
           },
           "imports": [
@@ -59,7 +63,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/lib64/dotnet/sdk/8.0.115/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/lib64/dotnet/sdk/8.0.116/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

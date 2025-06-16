@@ -28,44 +28,42 @@ namespace HOMM_Battles.Units
         DeathKnight,
         BoneDragon
     }
-    
+
     // Castle
 
     public class Peasant : Unit
     {
-        public Peasant(int amount_, Hexacell hex, bool team_) : base(amount_, hex, team_)
+        public Peasant(int amount_, Hexacell hex, bool team_) : base(amount_, hex, team_, 0)
         {
             name = "Peasant";
             health = 7;
-            speed = 8;
+            speed = 4;
             force = 1;
             defence = 1;
             damage = new DamageRange(1, 2);
             isConterattacking = true;
-            sprite = new Pixbuf("Assets/peasant.png").ScaleSimple(35, 35, InterpType.Bilinear);
             healthLeft = amount * health;
         }
     }
 
     public class Archer : Unit
     {
-        public Archer(int amount_, Hexacell hex, bool team_) : base(amount_, hex, team_)
+        public Archer(int amount_, Hexacell hex, bool team_) : base(amount_, hex, team_, 1)
         {
             name = "Archer";
             health = 10;
-            speed = 5;
+            speed = 4;
             force = 4;
             defence = 2;
             damage = new DamageRange(2, 5);
             isConterattacking = true;
-            sprite = new Pixbuf("Assets/archer.png").ScaleSimple(35, 35, InterpType.Bilinear);
             healthLeft = amount * health;
         }
     }
 
     public class Griffin : Unit
     {
-        public Griffin(int amount_, Hexacell hex, bool team_) : base(amount_, hex, team_)
+        public Griffin(int amount_, Hexacell hex, bool team_) : base(amount_, hex, team_, 2)
         {
             name = "Griffin";
             health = 18;
@@ -74,14 +72,13 @@ namespace HOMM_Battles.Units
             defence = 5;
             damage = new DamageRange(4, 6);
             isConterattacking = true;
-            sprite = new Pixbuf("Assets/griffin.png").ScaleSimple(35, 35, InterpType.Bilinear);
             healthLeft = amount * health;
         }
     }
 
     public class Swordsman : Unit
     {
-        public Swordsman(int amount_, Hexacell hex, bool team_) : base(amount_, hex, team_)
+        public Swordsman(int amount_, Hexacell hex, bool team_) : base(amount_, hex, team_, 3)
         {
             name = "Swordsman";
             health = 40;
@@ -90,14 +87,13 @@ namespace HOMM_Battles.Units
             defence = 4;
             damage = new DamageRange(3, 6);
             isConterattacking = true;
-            sprite = new Pixbuf("Assets/swordsman.png").ScaleSimple(35, 35, InterpType.Bilinear);
             healthLeft = amount * health;
         }
     }
 
     public class Monk : Unit
     {
-        public Monk(int amount_, Hexacell hex, bool team_) : base(amount_, hex, team_)
+        public Monk(int amount_, Hexacell hex, bool team_) : base(amount_, hex, team_, 4)
         {
             name = "Monk";
             health = 35;
@@ -106,14 +102,13 @@ namespace HOMM_Battles.Units
             defence = 6;
             damage = new DamageRange(5, 8);
             isConterattacking = true;
-            sprite = new Pixbuf("Assets/monk.png").ScaleSimple(35, 35, InterpType.Bilinear);
             healthLeft = amount * health;
         }
     }
 
     public class Cavalier : Unit
     {
-        public Cavalier(int amount_, Hexacell hex, bool team_) : base(amount_, hex, team_)
+        public Cavalier(int amount_, Hexacell hex, bool team_) : base(amount_, hex, team_, 5)
         {
             name = "Cavalier";
             health = 24;
@@ -122,23 +117,21 @@ namespace HOMM_Battles.Units
             defence = 10;
             damage = new DamageRange(8, 12);
             isConterattacking = true;
-            sprite = new Pixbuf("Assets/cavalier.png").ScaleSimple(35, 35, InterpType.Bilinear);
             healthLeft = amount * health;
         }
     }
 
     public class Angel : Unit
     {
-        public Angel(int amount_, Hexacell hex, bool team_) : base(amount_, hex, team_)
+        public Angel(int amount_, Hexacell hex, bool team_) : base(amount_, hex, team_, 6)
         {
             name = "Angel";
             health = 90;
-            speed = 9;
+            speed = 17;
             force = 20;
             defence = 18;
             damage = new DamageRange(50);
             isConterattacking = true;
-            sprite = new Pixbuf("Assets/angel.png").ScaleSimple(35, 35, InterpType.Bilinear);
             healthLeft = amount * health;
         }
     }
@@ -147,7 +140,7 @@ namespace HOMM_Battles.Units
 
     public class Skeleton : Unit
     {
-        public Skeleton(int amount_, Hexacell hex, bool team_) : base(amount_, hex, team_)
+        public Skeleton(int amount_, Hexacell hex, bool team_) : base(amount_, hex, team_, 7)
         {
             name = "Skeleton";
             health = 6;
@@ -156,14 +149,13 @@ namespace HOMM_Battles.Units
             defence = 5;
             damage = new DamageRange(1, 3);
             isConterattacking = true;
-            sprite = new Pixbuf("Assets/skeleton.png").ScaleSimple(35, 35, InterpType.Bilinear);
             healthLeft = amount * health;
         }
     }
 
     public class Zombie : Unit
     {
-        public Zombie(int amount_, Hexacell hex, bool team_) : base(amount_, hex, team_)
+        public Zombie(int amount_, Hexacell hex, bool team_) : base(amount_, hex, team_, 8)
         {
             name = "Zombie";
             health = 12;
@@ -172,14 +164,13 @@ namespace HOMM_Battles.Units
             defence = 5;
             damage = new DamageRange(3, 5);
             isConterattacking = true;
-            sprite = new Pixbuf("Assets/zombie.png").ScaleSimple(35, 35, InterpType.Bilinear);
             healthLeft = amount * health;
         }
     }
 
     public class Ghost : Unit
     {
-        public Ghost(int amount_, Hexacell hex, bool team_) : base(amount_, hex, team_)
+        public Ghost(int amount_, Hexacell hex, bool team_) : base(amount_, hex, team_, 9)
         {
             name = "Ghost";
             health = 8;
@@ -188,14 +179,13 @@ namespace HOMM_Battles.Units
             defence = 3;
             damage = new DamageRange(2, 4);
             isConterattacking = false;
-            sprite = new Pixbuf("Assets/ghost.png").ScaleSimple(35, 35, InterpType.Bilinear);
             healthLeft = amount * health;
         }
     }
 
     public class Vampire : Unit
     {
-        public Vampire(int amount_, Hexacell hex, bool team_) : base(amount_, hex, team_)
+        public Vampire(int amount_, Hexacell hex, bool team_) : base(amount_, hex, team_, 10)
         {
             name = "Vampire";
             health = 18;
@@ -204,14 +194,13 @@ namespace HOMM_Battles.Units
             defence = 6;
             damage = new DamageRange(4, 6);
             isConterattacking = true;
-            sprite = new Pixbuf("Assets/vampire.png").ScaleSimple(35, 35, InterpType.Bilinear);
             healthLeft = amount * health;
         }
     }
 
     public class Lich : Unit
     {
-        public Lich(int amount_, Hexacell hex, bool team_) : base(amount_, hex, team_)
+        public Lich(int amount_, Hexacell hex, bool team_) : base(amount_, hex, team_, 13)
         {
             name = "Lich";
             health = 20;
@@ -220,39 +209,36 @@ namespace HOMM_Battles.Units
             defence = 7;
             damage = new DamageRange(5, 8);
             isConterattacking = true;
-            sprite = new Pixbuf("Assets/lich.png").ScaleSimple(35, 35, InterpType.Bilinear);
             healthLeft = amount * health;
         }
     }
 
     public class DeathKnight : Unit
     {
-        public DeathKnight(int amount_, Hexacell hex, bool team_) : base(amount_, hex, team_)
+        public DeathKnight(int amount_, Hexacell hex, bool team_) : base(amount_, hex, team_, 12)
         {
-            name = "Death Knight";
+            name = "Death K.";
             health = 16;
             speed = 4;
             force = 7;
             defence = 6;
             damage = new DamageRange(4, 7);
             isConterattacking = true;
-            sprite = new Pixbuf("Assets/wight.png").ScaleSimple(35, 35, InterpType.Bilinear);
             healthLeft = amount * health;
         }
     }
 
     public class BoneDragon : Unit
     {
-        public BoneDragon(int amount_, Hexacell hex, bool team_) : base(amount_, hex, team_)
+        public BoneDragon(int amount_, Hexacell hex, bool team_) : base(amount_, hex, team_, 15)
         {
-            name = "Bone Dragon";
+            name = "Dragon";
             health = 40;
-            speed = 6;
+            speed = 16;
             force = 15;
             defence = 12;
             damage = new DamageRange(8, 12);
             isConterattacking = true;
-            sprite = new Pixbuf("Assets/bone_dragon.png").ScaleSimple(35, 35, InterpType.Bilinear);
             healthLeft = amount * health;
         }
     }

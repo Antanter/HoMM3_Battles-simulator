@@ -37,25 +37,16 @@ namespace HOMM_Battles.TurnQueue
         public Unit NextCheck() {
             IsConsistent();
 
-            return queue.FirstOrDefault(x => x != null && !x.IsDead());
+            return queue.FirstOrDefault(x => !x.IsDead());
         }
 
-        public Unit Next()
-        {
+        public Unit Next() {
             IsConsistent();
             
             Unit next = queue.Dequeue();
             queue.Enqueue(next);
 
             return next.IsDead() ? Next() : next;
-        }
-
-        public void PrintQueue()
-        {
-            foreach (Unit unit in queue)
-            {
-                Console.WriteLine(unit.name + " " + unit.amount + " " + round + " " + turn);
-            }
         }
 
         public void DrawQueue(Cairo.Context cr, double startX, double startY)
@@ -75,8 +66,8 @@ namespace HOMM_Battles.TurnQueue
                 cr.Rectangle(x, y, boxWidth, boxHeight);
                 cr.Fill();
 
-                double spriteX = x + unit.sprite.Width / 2;
-                double spriteY = y + unit.sprite.Height / 2;
+                double spriteX = x + 10;
+                double spriteY = y + 10;
 
                 Gdk.CairoHelper.SetSourcePixbuf(cr, unit.sprite, spriteX, spriteY);
                 cr.Paint();

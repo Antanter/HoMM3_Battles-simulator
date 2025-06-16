@@ -2,7 +2,6 @@
 using HOMM_Battles.TurnQueue;
 using Gtk;
 using System.Drawing;
-using System.Threading.Tasks;
 
 namespace HOMM_Battles.MapMechanics
 {
@@ -12,35 +11,54 @@ namespace HOMM_Battles.MapMechanics
         public GameCycle gameCycle;
         int[,] points = new int[,] {{0, 2}, {0, 4}, {0, 6}, {0, 7}, {0, 8}, {0, 10}, {0, 11},
                                     {17, 2}, {17, 4}, {17, 6}, {17, 7}, {17, 8}, {17, 10}, {17, 11}};
+        private bool isMovementInProgress = false;
 
-        public bool OnDrawn(Cairo.Context cr) {
+        public bool OnDrawn(Cairo.Context cr)
+        {
             gameCycle.DrawQueue(cr, 100, 700);
             battleGrid.DrawHexGrid(cr, gameCycle.NextCheck());
             return true;
         }
 
-        public async Task OnButtonPress(ButtonPressEventArgs ev) {
+        public async Task OnButtonPress(ButtonPressEventArgs ev)
+        {
+            if (isMovementInProgress) return;
+
             int mouseX = (int)ev.Event.X;
             int mouseY = (int)ev.Event.Y;
 
             Hexacell? clickedHex = battleGrid.GetHexFromCoords(new Point(mouseX, mouseY));
-            var unit = gameCycle.Next();
 
-            if (clickedHex != null && clickedHex.GetUnit() != unit) {
+            if (clickedHex == null) return;
 
-                if (clickedHex.HoldUnit() && unit.CanAttack(clickedHex.GetUnit())) {
-                    var path = battleGrid.GetMinimalPathBeforeTarget(unit.currentHex, clickedHex);
-                    
-                    await unit.GoToPositionAsync(path);
-                    clickedHex.isSelected = true;
-                    unit.Attack(clickedHex.GetUnit());
-                }
+            var unit = gameCycle.NextCheck();
+            var posUnit = clickedHex.GetUnit();
 
-                else if (clickedHex.GetUnit() == null) {
-                    var path = battleGrid.GetMinimalPath(unit.currentHex, clickedHex);
-                    await unit.GoToPositionAsync(path);
-                    clickedHex.isSelected = true;
-                }
+            if ((posUnit != null && posUnit.team == unit.team) || posUnit == unit) return;
+
+            unit = gameCycle.Next();
+
+            if (posUnit != null && unit.CanAttack(posUnit))
+            {
+                var path = battleGrid.GetMinimalPathBeforeTarget(unit.currentHex, clickedHex);
+
+                isMovementInProgress = true;
+                await unit.GoToPositionAsync(path);
+                isMovementInProgress = false;
+
+                clickedHex.isSelected = true;
+                unit.Attack(posUnit);
+            }
+
+            else if (posUnit == null)
+            {
+                var path = battleGrid.GetMinimalPath(unit.currentHex, clickedHex);
+
+                isMovementInProgress = true;
+                await unit.GoToPositionAsync(path);
+                isMovementInProgress = false;
+
+                clickedHex.isSelected = true;
             }
         }
 

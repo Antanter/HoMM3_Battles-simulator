@@ -9,7 +9,9 @@ public class GameMenu : Window
     VBox settingsMenu;
     VBox modeMenu;
 
-    public GameMenu() : base("Heroes of Might and Magic III: Battle edition") {
+    public GameMenu() : base("Heroes of Might and Magic III: Battle edition")
+    {
+        //var player = new MusicPlayer();
         SetDefaultSize(400, 300);
         SetPosition(WindowPosition.Center);
         DeleteEvent += delegate { Application.Quit(); };
@@ -23,6 +25,8 @@ public class GameMenu : Window
         ShowMainMenu();
 
         ShowAll();
+        
+        //player.Play("main_menu");
     }
 
     void ClearMainBox() {

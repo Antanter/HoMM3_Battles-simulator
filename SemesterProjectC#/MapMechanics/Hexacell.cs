@@ -99,8 +99,8 @@ public class Hexacell : DrawingArea
 
         if (unit != null && !unit.IsDead())
         {
-            double spriteX = xOffset - unit.sprite.Width / 2.0;
-            double spriteY = yOffset - unit.sprite.Height / 2.0;
+            double spriteX = xOffset - unit.sprite.Width / 2;
+            double spriteY = yOffset - unit.sprite.Height / 1.5;
 
             Gdk.CairoHelper.SetSourcePixbuf(cr, unit.sprite, spriteX, spriteY);
             cr.Paint();

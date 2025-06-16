@@ -43,36 +43,6 @@ namespace HOMM_Battles.MapMechanics
             return units;
         }
 
-        private Hexacell? GetNearestHex(Point point)
-        {
-            Hexacell? selectedCell = null;
-            double minDistance = double.MaxValue;
-
-            for (int x = 0; x < width; ++x) {
-                for (int y = 0; y < height; ++y) {
-                    var cell = map[x, y];
-
-                    cell.isSelected = false;
-
-                    if (cell.IsPointInHexagon(point.X, point.Y)) {
-                        selectedCell = cell;
-                        continue;
-                    }
-
-                    if (!cell.isSelected) {
-                        double distance = cell.Dist(point);
-
-                        if (distance < minDistance) {
-                            minDistance = distance;
-                            selectedCell = cell;
-                        }
-                    }
-                }
-            }
-
-            return selectedCell;
-        }
-
         public Hexacell? GetHexFromCoords(Point point)
         {
             Hexacell? cellOutput = null;
@@ -102,23 +72,22 @@ namespace HOMM_Battles.MapMechanics
             map[point.X, point.Y].SetUnit(unit);
         }
 
-        private List<Hexacell> GetNeighbors(Hexacell hex, Hexacell start, Hexacell target)
+        private List<Hexacell> GetNeighbors(Hexacell hex, bool temp)
         {
             List<Hexacell> neighbors = new List<Hexacell>();
 
             int x = hex.GetPosition().X;
             int y = hex.GetPosition().Y;
 
-            int[,] directions = new int[,] { {1, 0}, {-1, 0}, {1, 1}, {-1, 1}, {1, -1}, {-1, -1} };
+            int[,] directionsEven = new int[,] { {1, 0}, {-1, 0}, {0, -1}, {0, 1}, {1, 1}, {1, -1} };
+            int[,] directionsOdd = new int[,] { {1, 0}, {-1, 0}, {0, 1}, {0, -1}, {-1, 1}, {-1, -1} };
 
             for (int i = 0; i < 6; i++)
             {
-                int nx = x + directions[i, 0];
-                int ny = y + directions[i, 1];
+                int nx = x + (x % 2 == 0 ? directionsOdd[i, 0] : directionsEven[i, 0]);
+                int ny = y + (y % 2 == 0 ? directionsOdd[i, 1] : directionsEven[i, 1]);
 
-                if (nx >= 0 && ny >= 0 && nx < width && ny < height && (start.GetUnit() != target.GetUnit())) {
-                    neighbors.Add(map[nx, ny]);
-                }
+                if (nx >= 0 && ny >= 0 && nx < width && ny < height && temp) neighbors.Add(map[nx, ny]);
             }
 
             return neighbors;
@@ -137,21 +106,18 @@ namespace HOMM_Battles.MapMechanics
             {
                 Hexacell current = frontier.Dequeue();
 
-                if (current == targetHex)
-                    break;
+                if (current == targetHex) break;
 
-                foreach (var neighbor in GetNeighbors(current, startHex, targetHex))
-                {
-                    if (neighbor == null || cameFrom.ContainsKey(neighbor))
-                        continue;
+                foreach (var neighbor in GetNeighbors(current, startHex.GetUnit() != targetHex.GetUnit())) {
+                    if (neighbor == null || cameFrom.ContainsKey(neighbor)) continue;
+
+                    var unitInNeighbor = neighbor.GetUnit();
+                    if (unitInNeighbor != null && unitInNeighbor != targetHex.GetUnit()) continue;
 
                     frontier.Enqueue(neighbor);
                     cameFrom[neighbor] = current;
                 }
             }
-
-            if (!cameFrom.ContainsKey(targetHex))
-                return path;
 
             Hexacell step = includeTarget ? targetHex : cameFrom[targetHex];
             Stack<Hexacell> reversedPath = new Stack<Hexacell>();
@@ -170,12 +136,12 @@ namespace HOMM_Battles.MapMechanics
 
         public Queue<Hexacell> GetMinimalPath(Hexacell startHex, Hexacell targetHex)
         {
-            return BuildPath(startHex, targetHex, includeTarget: true);
+            return BuildPath(startHex, targetHex, true);
         }
 
         public Queue<Hexacell> GetMinimalPathBeforeTarget(Hexacell startHex, Hexacell targetHex)
         {
-            return BuildPath(startHex, targetHex, includeTarget: false);
+            return BuildPath(startHex, targetHex, false);
         }
     }
 }
