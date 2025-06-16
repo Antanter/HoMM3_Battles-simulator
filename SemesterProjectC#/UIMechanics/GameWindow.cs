@@ -16,11 +16,15 @@ namespace HOMM_Battles.MapMechanics
 
             drawingArea.AddEvents((int)Gdk.EventMask.ButtonPressMask);
 
-            SetDefaultSize(1200, 850);
-            SetPosition(WindowPosition.Center);
+            Fullscreen();
 
             DeleteEvent += (o, args) => Application.Quit();
-            drawingArea.Drawn += (o, args) => mapEngine.OnDrawn(args.Cr);
+            drawingArea.Drawn += (o, args) => {
+                int width = drawingArea.AllocatedWidth;
+                int height = drawingArea.AllocatedHeight;
+
+                mapEngine.OnDrawn(args.Cr, width, height);
+            };
             drawingArea.ButtonPressEvent += (o, args) => mapEngine.OnButtonPress(args);
 
             drawingArea.QueueDraw();

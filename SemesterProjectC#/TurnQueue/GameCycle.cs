@@ -12,17 +12,21 @@ namespace HOMM_Battles.TurnQueue
     {
         public event EventHandler RestartRequested;
         public Queue<Unit> queue;
-        private int round;
-        private int turn;
+        private int turnReal;
+        private int turnImag;
 
         public GameCycle()
         {
-            round = 0;
-            turn = 0;
+            turnReal = 0;
+            turnImag = 0;
             queue = new Queue<Unit>();
         }
 
-        public void Start() => queue.OrderByDescending(unit => unit.speed);
+        public void Start()
+        {
+            queue.OrderByDescending(unit => unit.speed);
+            Console.WriteLine(queue);
+        }
 
         private void IsConsistent() {
             if (!(queue.Any(x => x.team && !x.IsDead()) && queue.Any(x => !x.team && !x.IsDead()))) {
@@ -45,18 +49,20 @@ namespace HOMM_Battles.TurnQueue
             
             Unit next = queue.Dequeue();
             queue.Enqueue(next);
+            ++turnImag;
 
-            return next.IsDead() ? Next() : next;
+            if (next.IsDead()) return Next();
+            else { ++turnReal; return next; }
         }
 
-        public void DrawQueue(Cairo.Context cr, double startX, double startY)
+        public void DrawQueue(Cairo.Context cr)
         {
             const double boxWidth = 80;
             const double boxHeight = 100;
             const double padding = 10;
 
-            double x = startX;
-            double y = startY;
+            double x = MapEngine.width / 5.0;
+            double y = MapEngine.height / 2.0;
 
             foreach (Unit unit in queue)
             {
@@ -86,8 +92,8 @@ namespace HOMM_Battles.TurnQueue
             cr.SelectFontFace("Sans", Cairo.FontSlant.Normal, Cairo.FontWeight.Bold);
             cr.SetFontSize(14);
 
-            cr.MoveTo(startX, startY + boxHeight + 3 * padding);
-            cr.ShowText($"Round: {round}, Turn: {turn}.");
+            cr.MoveTo(MapEngine.width / 5.0, MapEngine.height / 2.0 + boxHeight + 1.5 * padding);
+            cr.ShowText($"Round: {turnImag / queue.Count}, Turn: №{turnReal}.");
         }
     }
 }

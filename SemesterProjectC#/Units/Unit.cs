@@ -91,11 +91,12 @@ namespace HOMM_Battles.Units
             targetHex.SetUnit(this);
             currentHex = targetHex;
 
-            await Task.Delay(50);
+            await Task.Delay(75);
         }
 
         public async Task GoToPositionAsync(Queue<Hexacell> path)
         {
+            MusicPlayer.SetTrack("steps", 16.0f/path.Count);
             foreach (Hexacell next in path)
             {
                 await NextCellAsync(next);
@@ -106,7 +107,7 @@ namespace HOMM_Battles.Units
 
         public virtual void Defend(Unit target)
         {
-            int absorbedDamage = target.damage.ChooseRand() * target.amount * (1 + (target.force - defence) / 10);
+            int absorbedDamage = Math.Max(0, (int)(target.damage.ChooseRand() * target.amount * (1 + Math.Tanh((target.force - defence) / 10) * 2)));
             healthLeft -= absorbedDamage;
 
             if (healthLeft <= 0) { Death(); }
@@ -118,6 +119,8 @@ namespace HOMM_Battles.Units
         public virtual void Attack(Unit target)
         {
             target.Defend(this);
+            Random random = new Random();
+            MusicPlayer.SetTrack($"attack_{(name == "Dragon" || name == "Zombie" ? 4 : random.Next(1, 4))}");
             if (target.isConterattacking) Defend(target);
         }
 
@@ -125,7 +128,7 @@ namespace HOMM_Battles.Units
         {
             isActive = false;
             amount = 0;
-            Console.Beep();
+            MusicPlayer.SetTrack("death");
         }
     }
 }

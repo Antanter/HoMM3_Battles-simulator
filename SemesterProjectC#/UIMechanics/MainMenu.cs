@@ -1,3 +1,4 @@
+using System.Security.Cryptography.X509Certificates;
 using Gtk;
 using HOMM_Battles.MapMechanics;
 using HOMM_Battles.PersonaficationAndUI;
@@ -11,7 +12,6 @@ public class GameMenu : Window
 
     public GameMenu() : base("Heroes of Might and Magic III: Battle edition")
     {
-        //var player = new MusicPlayer();
         SetDefaultSize(400, 300);
         SetPosition(WindowPosition.Center);
         DeleteEvent += delegate { Application.Quit(); };
@@ -25,16 +25,17 @@ public class GameMenu : Window
         ShowMainMenu();
 
         ShowAll();
-        
-        //player.Play("main_menu");
     }
 
-    void ClearMainBox() {
+    void ClearMainBox()
+    {
         foreach (var child in mainBox.Children) mainBox.Remove(child);
+        MusicPlayer.Play();
     }
 
     void ShowMainMenu()
     {
+        MusicPlayer.SetTrack("main_menu");
         ClearMainBox();
         mainBox.PackStart(mainMenu, true, true, 0);
         ShowAll();
@@ -87,8 +88,8 @@ public class GameMenu : Window
         backBtn.Clicked += (s, e) => ShowMainMenu();
         topLeft.PackStart(backBtn, false, false, 0);
 
-        CheckButton check = new CheckButton("Do shooters shoot?");
-        check.Toggled += (s, e) => PlayerAccount.DoesShootersShoots = !PlayerAccount.DoesShootersShoots;
+        CheckButton check = new CheckButton("Play music") { Active = true };
+        check.Toggled += (s, e) => PlayerAccount.musicEnabled = check.Active;
 
         settingsMenu.PackStart(topLeft, false, false, 0);
         settingsMenu.PackStart(check, false, false, 0);
@@ -120,10 +121,35 @@ public class GameMenu : Window
                 MapEngine map = new MapEngine(18, 13, settings);
                 settings.Destroy();
 
+                MusicPlayer.Stop();
+
                 GameWindow window = new GameWindow(map);
-                window.mapEngine.gameCycle.RestartRequested += (sender, e) => {
-                    window.Destroy();
-                    ShowMainMenu();
+                window.mapEngine.gameCycle.RestartRequested += (sender, e) =>
+                {
+                    MusicPlayer.SetTrack("endschpiele", 0.75f);
+
+                    bool transitionDone = false;
+
+                    GLib.Timeout.Add(3000, () =>
+                    {
+                        if (!transitionDone)
+                        {
+                            transitionDone = true;
+                            window.Destroy();
+                            ShowMainMenu();
+                        }
+                        return false;
+                    });
+
+                    window.ButtonPressEvent += (s, ev) =>
+                    {
+                        if (!transitionDone)
+                        {
+                            transitionDone = true;
+                            window.Destroy();
+                            ShowMainMenu();
+                        }
+                    };
                 };
                 window.ShowAll();
             }

@@ -12,6 +12,8 @@ public class Hexacell : DrawingArea
     private const double hexSize = 30;
     public bool isSelected = false;
     public bool isColoured = false;
+    private int paddingX;
+    private int paddingY;
 
     public Hexacell(int x, int y)
     {
@@ -53,8 +55,8 @@ public class Hexacell : DrawingArea
     {
         if (position.Y % 2 == 0) { px -= 0.5 * Math.Sqrt(3) * hexSize; }
 
-        double dx = Math.Abs(px - ((position.X + BattleGrid.Padding()) * Math.Sqrt(3) * hexSize));
-        double dy = Math.Abs(py - ((position.Y + BattleGrid.Padding()) * 1.5 * hexSize));
+        double dx = Math.Abs(px - (MapEngine.width / 5.0 + (position.X + BattleGrid.Padding()) * Math.Sqrt(3) * hexSize));
+        double dy = Math.Abs(py - (MapEngine.height / 6.0 + (position.Y + BattleGrid.Padding()) * 1.5 * hexSize));
 
         if (dx > hexSize || dy > hexSize || !isColoured) return false;
         return Math.Sqrt(Math.Pow(dx, 2) + Math.Pow(dy, 2)) <= hexSize;
@@ -65,8 +67,8 @@ public class Hexacell : DrawingArea
     public void DrawHexagon(Cairo.Context cr, double x, double y, HOMM_Battles.Units.Unit unit_)
     {
         IsColoured(unit_);
-        double xOffset = (x + BattleGrid.Padding()) * Math.Sqrt(3) * hexSize;
-        double yOffset = (y + BattleGrid.Padding()) * 1.5 * hexSize;
+        double xOffset = MapEngine.width / 5.0 + (x + BattleGrid.Padding()) * Math.Sqrt(3) * hexSize;
+        double yOffset = MapEngine.height / 6.0 + (y + BattleGrid.Padding()) * 1.5 * hexSize;
 
         if (y % 2 == 0) { xOffset += 0.5 * Math.Sqrt(3) * hexSize; }
 

@@ -218,7 +218,7 @@ namespace HOMM_Battles.Units
         public DeathKnight(int amount_, Hexacell hex, bool team_) : base(amount_, hex, team_, 12)
         {
             name = "Death K.";
-            health = 16;
+            health = 45;
             speed = 4;
             force = 7;
             defence = 6;
@@ -233,7 +233,7 @@ namespace HOMM_Battles.Units
         public BoneDragon(int amount_, Hexacell hex, bool team_) : base(amount_, hex, team_, 15)
         {
             name = "Dragon";
-            health = 40;
+            health = 110;
             speed = 16;
             force = 15;
             defence = 12;
