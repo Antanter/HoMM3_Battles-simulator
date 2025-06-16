@@ -59,10 +59,8 @@ public class SettingsWindow : Dialog
             row.PackStart(amountEntry, false, false, 5);
             row.PackStart(unitSelector, false, false, 5);
 
-            if (i < 7)
-                leftColumn.PackStart(row, false, false, 5);
-            else
-                rightColumn.PackStart(row, false, false, 5);
+            if (i < 7) leftColumn.PackStart(row, false, false, 5);
+            else rightColumn.PackStart(row, false, false, 5);
         }
 
         leftColumnContainer.PackStart(team1Label, false, false, 5);
@@ -77,10 +75,8 @@ public class SettingsWindow : Dialog
         mainBox.PackStart(columns, false, false, 10);
         contentBox.PackStart(mainBox, false, false, 10);
 
-        AddButton("Start", ResponseType.Ok);
-        AddButton("Cancel", ResponseType.Cancel);
-
         Button randomButton = new Button("Random start");
+        Button balancedButton = new Button("Balanced start");
 
         randomButton.Clicked += (sender, e) =>
         {
@@ -96,8 +92,31 @@ public class SettingsWindow : Dialog
             }
         };
 
-        HBox buttonBox = new HBox(false, 5);
+        balancedButton.Clicked += (sender, e) =>
+        {
+            Random rnd = new Random();
+            int unitTypeCount = Enum.GetNames(typeof(HOMM_Battles.Units.UnitType)).Length;
+
+            for (int i = 0; i < amountEntries.Count; i++)
+            {
+                int mid = unitTypeCount / 2;
+                amountEntries[i].Text = rnd.Next((mid - (i % mid)) * 10, (mid - (i % mid)) * 20 + 1).ToString();
+                unitSelectors[i].Active = i;
+            }
+        };
+
+        HBox buttonBox = new HBox(false, 15);
         buttonBox.PackStart(randomButton, false, false, 0);
+        buttonBox.PackStart(balancedButton, false, false, 0);
+
+        Button startButton = new Button("Start");
+        Button cancelButton = new Button("Cancel");
+
+        startButton.Clicked += (s, e) => Respond(ResponseType.Ok);
+        cancelButton.Clicked += (s, e) => Respond(ResponseType.Cancel);
+
+        buttonBox.PackStart(startButton, true, true, 0);
+        buttonBox.PackStart(cancelButton, true, true, 0);
         mainBox.PackStart(buttonBox, false, false, 10);
 
         ShowAll();

@@ -37,10 +37,10 @@ namespace HOMM_Battles.Units
         {
             name = "Peasant";
             health = 7;
-            speed = 4;
-            force = 1;
-            defence = 1;
-            damage = new DamageRange(1, 2);
+            speed = 5;
+            force = 2;
+            defence = 3;
+            damage = new DamageRange(1, 3);
             isConterattacking = true;
             healthLeft = amount * health;
         }
@@ -67,9 +67,9 @@ namespace HOMM_Battles.Units
         {
             name = "Griffin";
             health = 18;
-            speed = 7;
-            force = 6;
-            defence = 5;
+            speed = 11;
+            force = 8;
+            defence = 7;
             damage = new DamageRange(4, 6);
             isConterattacking = true;
             healthLeft = amount * health;
@@ -81,11 +81,11 @@ namespace HOMM_Battles.Units
         public Swordsman(int amount_, Hexacell hex, bool team_) : base(amount_, hex, team_, 3)
         {
             name = "Swordsman";
-            health = 40;
+            health = 42;
             speed = 4;
-            force = 6;
-            defence = 4;
-            damage = new DamageRange(3, 6);
+            force = 12;
+            defence = 10;
+            damage = new DamageRange(12, 20);
             isConterattacking = true;
             healthLeft = amount * health;
         }
@@ -97,10 +97,10 @@ namespace HOMM_Battles.Units
         {
             name = "Monk";
             health = 35;
-            speed = 6;
-            force = 8;
-            defence = 6;
-            damage = new DamageRange(5, 8);
+            speed = 5;
+            force = 18;
+            defence = 14;
+            damage = new DamageRange(18);
             isConterattacking = true;
             healthLeft = amount * health;
         }
@@ -111,11 +111,11 @@ namespace HOMM_Battles.Units
         public Cavalier(int amount_, Hexacell hex, bool team_) : base(amount_, hex, team_, 5)
         {
             name = "Cavalier";
-            health = 24;
-            speed = 8;
-            force = 12;
-            defence = 10;
-            damage = new DamageRange(8, 12);
+            health = 75;
+            speed = 15;
+            force = 20;
+            defence = 18;
+            damage = new DamageRange(18, 27);
             isConterattacking = true;
             healthLeft = amount * health;
         }
@@ -127,7 +127,7 @@ namespace HOMM_Battles.Units
         {
             name = "Angel";
             health = 90;
-            speed = 17;
+            speed = 18;
             force = 20;
             defence = 18;
             damage = new DamageRange(50);
@@ -143,10 +143,10 @@ namespace HOMM_Battles.Units
         public Skeleton(int amount_, Hexacell hex, bool team_) : base(amount_, hex, team_, 7)
         {
             name = "Skeleton";
-            health = 6;
-            speed = 4;
-            force = 5;
-            defence = 5;
+            health = 5;
+            speed = 5;
+            force = 3;
+            defence = 3;
             damage = new DamageRange(1, 3);
             isConterattacking = true;
             healthLeft = amount * health;
@@ -159,10 +159,10 @@ namespace HOMM_Battles.Units
         {
             name = "Zombie";
             health = 12;
-            speed = 2;
-            force = 6;
+            speed = 3;
+            force = 4;
             defence = 5;
-            damage = new DamageRange(3, 5);
+            damage = new DamageRange(4, 6);
             isConterattacking = true;
             healthLeft = amount * health;
         }
@@ -174,10 +174,10 @@ namespace HOMM_Battles.Units
         {
             name = "Ghost";
             health = 8;
-            speed = 6;
-            force = 4;
-            defence = 3;
-            damage = new DamageRange(2, 4);
+            speed = 11;
+            force = 5;
+            defence = 7;
+            damage = new DamageRange(2, 7);
             isConterattacking = false;
             healthLeft = amount * health;
         }
@@ -188,11 +188,11 @@ namespace HOMM_Battles.Units
         public Vampire(int amount_, Hexacell hex, bool team_) : base(amount_, hex, team_, 10)
         {
             name = "Vampire";
-            health = 18;
-            speed = 5;
+            health = 35;
+            speed = 9;
             force = 8;
             defence = 6;
-            damage = new DamageRange(4, 6);
+            damage = new DamageRange(15);
             isConterattacking = true;
             healthLeft = amount * health;
         }
@@ -203,11 +203,11 @@ namespace HOMM_Battles.Units
         public Lich(int amount_, Hexacell hex, bool team_) : base(amount_, hex, team_, 13)
         {
             name = "Lich";
-            health = 20;
+            health = 32;
             speed = 4;
             force = 10;
             defence = 7;
-            damage = new DamageRange(5, 8);
+            damage = new DamageRange(14, 16);
             isConterattacking = true;
             healthLeft = amount * health;
         }
@@ -219,10 +219,10 @@ namespace HOMM_Battles.Units
         {
             name = "Death K.";
             health = 45;
-            speed = 4;
-            force = 7;
-            defence = 6;
-            damage = new DamageRange(4, 7);
+            speed = 6;
+            force = 13;
+            defence = 11;
+            damage = new DamageRange(17, 25);
             isConterattacking = true;
             healthLeft = amount * health;
         }
@@ -235,9 +235,9 @@ namespace HOMM_Battles.Units
             name = "Dragon";
             health = 110;
             speed = 16;
-            force = 15;
-            defence = 12;
-            damage = new DamageRange(8, 12);
+            force = 22;
+            defence = 17;
+            damage = new DamageRange(35, 60);
             isConterattacking = true;
             healthLeft = amount * health;
         }
