@@ -96,7 +96,7 @@ namespace HOMM_Battles.Units
 
         public async Task GoToPositionAsync(Queue<Hexacell> path)
         {
-            MusicPlayer.SetTrack("steps", 16.0f/path.Count);
+            MusicPlayer.PlayMusic("steps", "steps", false, 16.0f/path.Count);
             foreach (Hexacell next in path)
             {
                 await NextCellAsync(next);
@@ -120,7 +120,7 @@ namespace HOMM_Battles.Units
         {
             target.Defend(this);
             Random random = new Random();
-            MusicPlayer.SetTrack($"attack_{(name == "Dragon" || name == "Zombie" ? 4 : random.Next(1, 4))}");
+            MusicPlayer.PlayMusic("attack", $"attack_{(name == "Dragon" || name == "Zombie" ? 4 : random.Next(1, 4))}");
             if (target.isConterattacking) Defend(target);
         }
 
@@ -128,7 +128,7 @@ namespace HOMM_Battles.Units
         {
             isActive = false;
             amount = 0;
-            MusicPlayer.SetTrack("death");
+            MusicPlayer.PlayMusic("death", "death");
         }
     }
 }

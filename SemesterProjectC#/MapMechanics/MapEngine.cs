@@ -18,7 +18,6 @@ namespace HOMM_Battles.MapMechanics
 
         public bool OnDrawn(Cairo.Context cr, int width, int height)
         {
-            MusicPlayer.Play();
             MapEngine.width = width;
             MapEngine.height = width;
             var sprite = new Pixbuf("Assets/Battlefield.png").ScaleSimple(width, height, InterpType.Bilinear);

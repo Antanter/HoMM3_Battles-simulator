@@ -22,11 +22,7 @@ namespace HOMM_Battles.TurnQueue
             queue = new Queue<Unit>();
         }
 
-        public void Start()
-        {
-            queue.OrderByDescending(unit => unit.speed);
-            Console.WriteLine(queue);
-        }
+        public void Start() => queue.OrderByDescending(unit => unit.speed);
 
         private void IsConsistent() {
             if (!(queue.Any(x => x.team && !x.IsDead()) && queue.Any(x => !x.team && !x.IsDead()))) {

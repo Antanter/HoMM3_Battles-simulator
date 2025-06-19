@@ -30,12 +30,11 @@ public class GameMenu : Window
     void ClearMainBox()
     {
         foreach (var child in mainBox.Children) mainBox.Remove(child);
-        MusicPlayer.Play();
     }
 
     void ShowMainMenu()
     {
-        MusicPlayer.SetTrack("main_menu");
+        MusicPlayer.PlayMusic("main_menu", "main_menu", true);
         ClearMainBox();
         mainBox.PackStart(mainMenu, true, true, 0);
         ShowAll();
@@ -121,12 +120,10 @@ public class GameMenu : Window
                 MapEngine map = new MapEngine(18, 13, settings);
                 settings.Destroy();
 
-                MusicPlayer.Stop();
-
                 GameWindow window = new GameWindow(map);
                 window.mapEngine.gameCycle.RestartRequested += (sender, e) =>
                 {
-                    MusicPlayer.SetTrack("endschpiele", 0.75f);
+                    MusicPlayer.PlayMusic("endschpiele", "endschpiele", false, 0.75f);
 
                     bool transitionDone = false;
 
