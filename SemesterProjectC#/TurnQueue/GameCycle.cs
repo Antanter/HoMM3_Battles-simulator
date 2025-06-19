@@ -11,6 +11,7 @@ namespace HOMM_Battles.TurnQueue
     public class GameCycle
     {
         public event EventHandler RestartRequested;
+        private bool restartAlreadyRequested = false;
         public Queue<Unit> queue;
         private int turnReal;
         private int turnImag;
@@ -24,8 +25,16 @@ namespace HOMM_Battles.TurnQueue
 
         public void Start() => queue.OrderByDescending(unit => unit.speed);
 
-        private void IsConsistent() {
-            if (!(queue.Any(x => x.team && !x.IsDead()) && queue.Any(x => !x.team && !x.IsDead()))) {
+        private void IsConsistent()
+        {
+            if (restartAlreadyRequested) return;
+
+            bool hasTeam1Alive = queue.Any(x => x.team && !x.IsDead());
+            bool hasTeam2Alive = queue.Any(x => !x.team && !x.IsDead());
+
+            if (!(hasTeam1Alive && hasTeam2Alive))
+            {
+                restartAlreadyRequested = true;
                 RestartRequested?.Invoke(this, EventArgs.Empty);
             }
         }

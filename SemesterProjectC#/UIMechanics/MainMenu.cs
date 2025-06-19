@@ -25,6 +25,7 @@ public class GameMenu : Window
         ShowMainMenu();
 
         ShowAll();
+        MusicPlayer.PlayMusic("main_menu", true);
     }
 
     void ClearMainBox()
@@ -34,7 +35,6 @@ public class GameMenu : Window
 
     void ShowMainMenu()
     {
-        MusicPlayer.PlayMusic("main_menu", "main_menu", true);
         ClearMainBox();
         mainBox.PackStart(mainMenu, true, true, 0);
         ShowAll();
@@ -123,7 +123,7 @@ public class GameMenu : Window
                 GameWindow window = new GameWindow(map);
                 window.mapEngine.gameCycle.RestartRequested += (sender, e) =>
                 {
-                    MusicPlayer.PlayMusic("endschpiele", "endschpiele", false, 0.75f);
+                    MusicPlayer.PlayMusic("endschpiele", true, 0.6f);
 
                     bool transitionDone = false;
 

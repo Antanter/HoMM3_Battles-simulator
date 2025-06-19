@@ -8,6 +8,22 @@ namespace HOMM_Battles.PersonaficationAndUI;
 
 static class PlayerAccount
 {
-    static public bool musicEnabled = true;
-    static public void ToggleMusic() => musicEnabled = !musicEnabled;
+    static private bool _musicEnabled;
+
+    static public bool musicEnabled
+    {
+        get => _musicEnabled;
+        set
+        {
+            _musicEnabled = value;
+            OnMyFlagChanged(value);
+        }
+    }
+
+    static public event Action<bool> MyFlagChanged;
+
+    static private void OnMyFlagChanged(bool newValue)
+    {
+        MyFlagChanged?.Invoke(newValue);
+    }
 }

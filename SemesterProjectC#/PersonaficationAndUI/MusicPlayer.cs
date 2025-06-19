@@ -5,7 +5,6 @@ static public class MusicPlayer
 {
     static private LibVLC _libVLC;
     static private Dictionary<string, string> _tracks;
-    static private Dictionary<string, MediaPlayer> _activePlayers = new();
 
     static MusicPlayer()
     {
@@ -25,19 +24,24 @@ static public class MusicPlayer
         };
     }
 
-    static public void PlayMusic(string id, string trackName, bool loop = false, float speed = 1.0f)
+    static public void PlayMusic(string trackName, bool loop = false, float speed = 1.0f)
     {
-        if (!_tracks.ContainsKey(trackName) || !PlayerAccount.musicEnabled)
+        if (!_tracks.ContainsKey(trackName))
             return;
 
-        StopMusic(id);
-
         var mediaPlayer = new MediaPlayer(_libVLC);
+
         var media = new Media(_libVLC, _tracks[trackName], FromType.FromPath);
         mediaPlayer.Media = media;
         media.Dispose();
 
         mediaPlayer.SetRate(speed);
+
+        PlayerAccount.MyFlagChanged += (val) =>
+        {
+            if (val) mediaPlayer.Play();
+            else mediaPlayer.Pause();
+        };
 
         if (loop)
         {
@@ -51,39 +55,15 @@ static public class MusicPlayer
         {
             mediaPlayer.EndReached += (_, _) =>
             {
-                //StopMusic(id);
-                //mediaPlayer.Dispose();
-                _activePlayers.Remove(id);
+                mediaPlayer.Stop();
             };
         }
 
-        _activePlayers[id] = mediaPlayer;
         mediaPlayer.Play();
-    }
-
-    static public void StopMusic(string id)
-    {
-        if (_activePlayers.TryGetValue(id, out var player))
-        {
-            player.Stop();
-            player.Dispose();
-            _activePlayers.Remove(id);
-        }
-    }
-
-    static public void StopAll()
-    {
-        foreach (var kvp in _activePlayers)
-        {
-            kvp.Value.Stop();
-            kvp.Value.Dispose();
-        }
-        _activePlayers.Clear();
     }
 
     static public void Dispose()
     {
-        StopAll();
         _libVLC.Dispose();
     }
 }

@@ -7,8 +7,14 @@ public class SettingsWindow : Dialog
     public List<Entry> amountEntries { get; private set; }
     public List<ComboBoxText> unitSelectors { get; private set; }
 
-    public SettingsWindow() : base("Unit settings", null, DialogFlags.Modal)
-    {
+    private void ClearAll() {
+        for (int i = 0; i < amountEntries.Count; i++) {
+            amountEntries[i].Text = "";
+            unitSelectors[i].Active = -1;
+        }
+    }
+
+    public SettingsWindow() : base("Unit settings", null, DialogFlags.Modal) {
         SetDefaultSize(600, 700);
         SetPosition(WindowPosition.Center);
 
@@ -34,8 +40,7 @@ public class SettingsWindow : Dialog
 
             ComboBoxText unitSelector = new ComboBoxText();
             Entry amountEntry = new Entry { PlaceholderText = "Amount" };
-            amountEntry.Changed += (o, e) =>
-            {
+            amountEntry.Changed += (o, e) => {
                 string text = amountEntry.Text;
                 string filtered = new string(text.Where(char.IsDigit).ToArray());
 
@@ -47,11 +52,11 @@ public class SettingsWindow : Dialog
                 }
             };
 
-            foreach (string unitName in Enum.GetNames(typeof(HOMM_Battles.Units.UnitType)))
-            {
+            foreach (string unitName in Enum.GetNames(typeof(HOMM_Battles.Units.UnitType))) {
                 unitSelector.AppendText(unitName);
             }
-            unitSelector.Active = 0;
+
+            unitSelector.Active = -1;
 
             unitSelectors.Add(unitSelector);
             amountEntries.Add(amountEntry);
@@ -77,9 +82,11 @@ public class SettingsWindow : Dialog
 
         Button randomButton = new Button("Random start");
         Button balancedButton = new Button("Balanced start");
+        Button testButton = new Button("Testing start");
 
         randomButton.Clicked += (sender, e) =>
         {
+            ClearAll();
             Random rnd = new Random();
             int unitTypeCount = Enum.GetNames(typeof(HOMM_Battles.Units.UnitType)).Length;
 
@@ -94,6 +101,7 @@ public class SettingsWindow : Dialog
 
         balancedButton.Clicked += (sender, e) =>
         {
+            ClearAll();
             Random rnd = new Random();
             int unitTypeCount = Enum.GetNames(typeof(HOMM_Battles.Units.UnitType)).Length;
 
@@ -105,9 +113,23 @@ public class SettingsWindow : Dialog
             }
         };
 
+        testButton.Clicked += (sender, e) =>
+        {
+            ClearAll();
+            Random rnd = new Random();
+            int unitTypeCount = Enum.GetNames(typeof(HOMM_Battles.Units.UnitType)).Length;
+
+            amountEntries[0].Text = "999";
+            unitSelectors[0].Active = 6;
+
+            amountEntries[7].Text = "1";
+            unitSelectors[7].Active = 0;
+        };
+
         HBox buttonBox = new HBox(false, 15);
         buttonBox.PackStart(randomButton, false, false, 0);
         buttonBox.PackStart(balancedButton, false, false, 0);
+        buttonBox.PackStart(testButton, false, false, 0);
 
         Button startButton = new Button("Start");
         Button cancelButton = new Button("Cancel");

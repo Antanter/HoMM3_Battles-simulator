@@ -80,12 +80,12 @@ namespace HOMM_Battles.MapMechanics
             int y = hex.GetPosition().Y;
 
             int[,] directionsEven = new int[,] { {1, 0}, {-1, 0}, {0, -1}, {0, 1}, {1, 1}, {1, -1} };
-            int[,] directionsOdd = new int[,] { {1, 0}, {-1, 0}, {0, 1}, {0, -1}, {-1, 1}, {-1, -1} };
+            int[,] directionsOdd = new int[,] { {1, 0}, {-1, 0}, {0, -1}, {0, 1}, {-1, 1}, {-1, -1} };
 
             for (int i = 0; i < 6; i++)
             {
-                int nx = x + (x % 2 == 0 ? directionsOdd[i, 0] : directionsEven[i, 0]);
-                int ny = y + (y % 2 == 0 ? directionsOdd[i, 1] : directionsEven[i, 1]);
+                int nx = x + (x % 2 == 1 ? directionsOdd[i, 0] : directionsEven[i, 0]);
+                int ny = y + directionsOdd[i, 1];
 
                 if (nx >= 0 && ny >= 0 && nx < width && ny < height && temp) neighbors.Add(map[nx, ny]);
             }
