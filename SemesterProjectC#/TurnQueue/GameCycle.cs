@@ -23,7 +23,7 @@ namespace HOMM_Battles.TurnQueue
             queue = new Queue<Unit>();
         }
 
-        public void Start() => queue.OrderByDescending(unit => unit.speed);
+        public void Shuffle() => queue = new Queue<Unit>(queue.OrderByDescending(unit => unit.speed));
 
         private void IsConsistent()
         {

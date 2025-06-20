@@ -58,8 +58,7 @@ public class GameMenu : Window
         Hide();
         BuildGame();
     }
-
-
+    
     void BuildMainMenu()
     {
         mainMenu = new VBox(true, 10);
@@ -127,7 +126,7 @@ public class GameMenu : Window
 
                     bool transitionDone = false;
 
-                    GLib.Timeout.Add(3000, () =>
+                    GLib.Timeout.Add(2000, () =>
                     {
                         if (!transitionDone)
                         {

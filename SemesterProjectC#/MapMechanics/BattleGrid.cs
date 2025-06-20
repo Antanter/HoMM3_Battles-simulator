@@ -72,22 +72,21 @@ namespace HOMM_Battles.MapMechanics
             map[point.X, point.Y].SetUnit(unit);
         }
 
-        private List<Hexacell> GetNeighbors(Hexacell hex, bool temp)
+        private List<Hexacell> GetNeighbors(Hexacell hex)
         {
             List<Hexacell> neighbors = new List<Hexacell>();
 
             int x = hex.GetPosition().X;
             int y = hex.GetPosition().Y;
 
-            int[,] directionsEven = new int[,] { {1, 0}, {-1, 0}, {0, -1}, {0, 1}, {1, 1}, {1, -1} };
-            int[,] directionsOdd = new int[,] { {1, 0}, {-1, 0}, {0, -1}, {0, 1}, {-1, 1}, {-1, -1} };
+            int[,] directions = new int[,] { {1, 0}, {-1, 0}, {0, -1}, {0, 1}, {1, 1}, {1, -1} };
 
             for (int i = 0; i < 6; i++)
             {
-                int nx = x + (x % 2 == 1 ? directionsOdd[i, 0] : directionsEven[i, 0]);
-                int ny = y + directionsOdd[i, 1];
+                int nx = x + (x % 2 == 0 ? -directions[i, 0] : directions[i, 0]);
+                int ny = y + directions[i, 1];
 
-                if (nx >= 0 && ny >= 0 && nx < width && ny < height && temp) neighbors.Add(map[nx, ny]);
+                if (nx >= 0 && ny >= 0 && nx < width && ny < height) neighbors.Add(map[nx, ny]);
             }
 
             return neighbors;
@@ -95,43 +94,56 @@ namespace HOMM_Battles.MapMechanics
 
         private Queue<Hexacell> BuildPath(Hexacell startHex, Hexacell targetHex, bool includeTarget)
         {
-            Queue<Hexacell> path = new Queue<Hexacell>();
-            Dictionary<Hexacell, Hexacell> cameFrom = new Dictionary<Hexacell, Hexacell>();
-            Queue<Hexacell> frontier = new Queue<Hexacell>();
+            var rootTable = new Dictionary<Hexacell, Hexacell>();
+            var distanceTable = new Dictionary<Hexacell, int>();
+            var queue = new Queue<Hexacell>();
 
-            frontier.Enqueue(startHex);
-            cameFrom[startHex] = null;
+            queue.Enqueue(startHex);
+            rootTable[startHex] = null;
+            distanceTable[startHex] = 0;
 
-            while (frontier.Count > 0)
+            if (startHex.GetUnit() != targetHex.GetUnit())
             {
-                Hexacell current = frontier.Dequeue();
+                while (queue.Count > 0)
+                {
+                    Hexacell current = queue.Dequeue();
+                    int currentDistance = distanceTable[current];
 
-                if (current == targetHex) break;
+                    foreach (var neighbor in GetNeighbors(current))
+                    {
+                        if (neighbor == null) continue;
 
-                foreach (var neighbor in GetNeighbors(current, startHex.GetUnit() != targetHex.GetUnit())) {
-                    if (neighbor == null || cameFrom.ContainsKey(neighbor)) continue;
+                        var unitInNeighbor = neighbor.GetUnit();
+                        if (unitInNeighbor != null && unitInNeighbor != targetHex.GetUnit())
+                            continue;
 
-                    var unitInNeighbor = neighbor.GetUnit();
-                    if (unitInNeighbor != null && unitInNeighbor != targetHex.GetUnit()) continue;
-
-                    frontier.Enqueue(neighbor);
-                    cameFrom[neighbor] = current;
+                        if (!distanceTable.ContainsKey(neighbor) || currentDistance + 1 < distanceTable[neighbor])
+                        {
+                            queue.Enqueue(neighbor);
+                            distanceTable[neighbor] = currentDistance + 1;
+                            rootTable[neighbor] = current;
+                        }
+                    }
                 }
             }
 
-            Hexacell step = includeTarget ? targetHex : cameFrom[targetHex];
-            Stack<Hexacell> reversedPath = new Stack<Hexacell>();
+            Hexacell step = includeTarget ? targetHex : rootTable[targetHex];
+            var path = new Stack<Hexacell>();
 
             while (step != null)
             {
-                reversedPath.Push(step);
-                cameFrom.TryGetValue(step, out step);
+                path.Push(step);
+                step = rootTable[step];
             }
 
-            while (reversedPath.Count > 0)
-                path.Enqueue(reversedPath.Pop());
+            return new Queue<Hexacell>(path);
+        }
 
-            return path;
+        public bool CanHandle(Hexacell hex)
+        {
+            bool output = false;
+            foreach (var neighbour in GetNeighbors(hex)) { if (neighbour.GetUnit() == null) output = true; }
+            return output;
         }
 
         public Queue<Hexacell> GetMinimalPath(Hexacell startHex, Hexacell targetHex)

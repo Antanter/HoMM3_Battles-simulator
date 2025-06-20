@@ -43,7 +43,7 @@ namespace HOMM_Battles.MapMechanics
             var unit = gameCycle.NextCheck();
             var posUnit = clickedHex.GetUnit();
 
-            if ((posUnit != null && posUnit.team == unit.team) || posUnit == unit) return;
+            if ((posUnit != null && posUnit.team == unit.team) || posUnit == unit || !battleGrid.CanHandle(clickedHex)) return;
 
             unit = gameCycle.Next();
 
@@ -112,7 +112,7 @@ namespace HOMM_Battles.MapMechanics
                             settings.unitSelectors[i].ActiveText), amount, battleGrid.map[points[i, 0], points[i, 1]], i < 7));
             }
 
-            gameCycle.Start();
+            gameCycle.Shuffle();
         }
     }
 }

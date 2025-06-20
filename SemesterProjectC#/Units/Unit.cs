@@ -85,22 +85,19 @@ namespace HOMM_Battles.Units
             sprite = team ? units[i] : units[i].Flip(true);
         }
 
-        public async Task NextCellAsync(Hexacell targetHex)
+        public async Task NextCellAsync(Hexacell nextHexacell)
         {
             currentHex.DeleteUnit();
-            targetHex.SetUnit(this);
-            currentHex = targetHex;
+            nextHexacell.SetUnit(this);
+            currentHex = nextHexacell;
 
             await Task.Delay(75);
         }
 
         public async Task GoToPositionAsync(Queue<Hexacell> path)
         {
-            MusicPlayer.PlayMusic("steps", false, 16.0f/path.Count);
-            foreach (Hexacell next in path)
-            {
-                await NextCellAsync(next);
-            }
+            MusicPlayer.PlayMusic("steps", false, 16.0f / path.Count);
+            foreach (var nextHexacell in path) await NextCellAsync(nextHexacell);
         }
 
         public bool IsDead() => !isActive;
