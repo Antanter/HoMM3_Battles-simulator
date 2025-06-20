@@ -43,21 +43,7 @@ static public class MusicPlayer
             else mediaPlayer.Pause();
         };
 
-        if (loop)
-        {
-            mediaPlayer.EndReached += (_, _) =>
-            {
-                mediaPlayer.Stop();
-                mediaPlayer.Play();
-            };
-        }
-        else
-        {
-            mediaPlayer.EndReached += (_, _) =>
-            {
-                mediaPlayer.Stop();
-            };
-        }
+        if (loop) mediaPlayer.EndReached += (_, _) => PlayMusic(trackName, true);
 
         mediaPlayer.Play();
     }
